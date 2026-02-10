@@ -20,7 +20,7 @@ public class DocumentController {
         this.documentService = documentService;
     }
     
-    @PostMapping("/upload")
+    @PostMapping("/uploads")
     public ResponseEntity<DocumentUploadResponse> upload(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.ok(documentService.upload(file));
     }
