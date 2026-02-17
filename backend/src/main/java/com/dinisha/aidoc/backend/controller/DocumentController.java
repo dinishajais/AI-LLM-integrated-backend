@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dinisha.aidoc.backend.entity.Document;
+import com.dinisha.aidoc.backend.exception.BadRequestException;
 import com.dinisha.aidoc.backend.response.DocumentUploadResponse;
 import com.dinisha.aidoc.backend.service.DocumentService;
 
@@ -27,6 +28,9 @@ public class DocumentController {
     
     @PostMapping("/uploads")
     public ResponseEntity<DocumentUploadResponse> upload(@RequestParam("file") MultipartFile file) {
+    	if (file == null || file.isEmpty()) {
+    	    throw new BadRequestException("File must not be empty");
+    	}
         return ResponseEntity.ok(documentService.upload(file));
     }
     

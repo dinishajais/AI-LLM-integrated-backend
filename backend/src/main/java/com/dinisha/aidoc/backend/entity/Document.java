@@ -4,13 +4,16 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.dinisha.aidoc.backend.enums.DocumentStatus;
+import com.dinisha.aidoc.backend.response.ExtractionResponse;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +34,18 @@ public class Document {
     private DocumentStatus status;
 
     private LocalDateTime createdAt;
+    
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String extractedText;
+
+	public String getExtractedText() {
+		return extractedText;
+	}
+
+	public void setExtractedText(String extractedText) {
+		this.extractedText = extractedText;
+	}
 
 	public UUID getId() {
 		return id;

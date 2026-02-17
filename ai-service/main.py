@@ -14,7 +14,7 @@ def extract_text(request: FileRequest):
 	file_path = request.file_path
 
 	if not os.path.exists(file_path):
-		return {"error": "File not found"}
+		raise HTTPException(status_code=404, detail="File not found")
 	
 	reader = PdfReader(file_path)
 	text = ""
@@ -25,5 +25,5 @@ def extract_text(request: FileRequest):
 	return {
         "pages": len(reader.pages),
         "characters": len(text),
-        "preview": text[:500]
+        "preview": text
     }
