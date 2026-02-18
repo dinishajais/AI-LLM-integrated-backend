@@ -18,7 +18,9 @@ import com.dinisha.aidoc.backend.enums.DocumentStatus;
 import com.dinisha.aidoc.backend.exception.PythonResponseParseException;
 import com.dinisha.aidoc.backend.repository.DocumentChunkRepository;
 import com.dinisha.aidoc.backend.repository.DocumentRepository;
+import com.dinisha.aidoc.backend.response.EmbeddingResponse;
 import com.dinisha.aidoc.backend.response.ExtractionResponse;
+import com.dinisha.aidoc.backend.service.PythonClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,12 +31,14 @@ public class DocumentHelper {
 	private String uploadDir;
 	private final DocumentRepository documentRepository;
 	private final DocumentChunkRepository documentChunkRepository;
+	private final PythonClient pythonClient;
 	ObjectMapper mapper = new ObjectMapper();
 
 
-	public DocumentHelper(DocumentRepository documentRepository, DocumentChunkRepository documentChunkRepository) {
+	public DocumentHelper(DocumentRepository documentRepository, DocumentChunkRepository documentChunkRepository,PythonClient pythonClient) {
 		this.documentRepository = documentRepository;
 		this.documentChunkRepository = documentChunkRepository;
+		this.pythonClient=pythonClient;
 	}
 
 	public Document CreateDirectoryAndSaveInDb(MultipartFile file) {
@@ -99,14 +103,17 @@ public class DocumentHelper {
 		}
 	}
 
-	public void storeChunksInDb(Document doc) {
+	public void storeVectorChunksInDb(Document doc) {
 		try {
 			String preview=mapper.readValue(doc.getExtractedText(),ExtractionResponse.class).getPreview();
 	        List<String> chunks = splitIntoChunks(preview, 1000);
 	        int index = 0;
 	        for (String chunkText : chunks) {
+	        	EmbeddingResponse embed =
+	        	        pythonClient.getEmbedding(chunkText);
 	            DocumentChunk chunk = new DocumentChunk();
 	            chunk.setDocumentId(doc.getId());
+	            chunk.setEmbedding(embed.getEmbedding().toString());
 	            chunk.setContent(chunkText);
 	            chunk.setChunkIndex(index++);
 	            documentChunkRepository.save(chunk);

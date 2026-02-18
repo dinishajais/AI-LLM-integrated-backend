@@ -1,12 +1,17 @@
 from fastapi import FastAPI
 from pypdf import PdfReader
 from pydantic import BaseModel
+from sentence_transformers import SentenceTransformer
 import os
 
 app = FastAPI()
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 class FileRequest(BaseModel):
     file_path: str
+    
+class EmbedRequest(BaseModel):
+    text: str
 
 @app.post("/extract-text")
 def extract_text(request: FileRequest):
@@ -26,4 +31,11 @@ def extract_text(request: FileRequest):
         "pages": len(reader.pages),
         "characters": len(text),
         "preview": text
+    }
+@app.post("/embed")
+def embed_text(request: EmbedRequest):
+	text=request.text
+	embedding = model.encode(text).tolist()
+	return {
+		"embedding": embedding
     }

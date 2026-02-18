@@ -25,6 +25,18 @@ public class DocumentChunk {
     private String content;
 
     private int chunkIndex;
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String embedding;
+
+
+	public String getEmbedding() {
+		return embedding;
+	}
+
+	public void setEmbedding(String embedding) {
+		this.embedding = embedding;
+	}
 
 	public UUID getId() {
 		return id;

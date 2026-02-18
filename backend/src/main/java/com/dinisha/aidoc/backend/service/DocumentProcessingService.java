@@ -33,7 +33,7 @@ public class DocumentProcessingService {
 		try {
 			ExtractionResponse data = pythonClient.processWithPython(doc.getFilePath());
 			doc = documentHelper.updateStatusOfDocument(data, doc);
-			documentHelper.storeChunksInDb(doc);
+			documentHelper.storeVectorChunksInDb(doc);
 			doc.setStatus(DocumentStatus.READY);
 			documentRepository.save(doc);
 		} catch (Exception  e) {
