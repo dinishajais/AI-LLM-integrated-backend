@@ -2,7 +2,12 @@ package com.dinisha.aidoc.backend.exception;
 
 public class PythonResponseParseException extends RuntimeException {
 
-    public PythonResponseParseException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PythonResponseParseException(String message) {
         super(message);
     }
 

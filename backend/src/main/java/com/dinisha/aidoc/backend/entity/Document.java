@@ -4,14 +4,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.dinisha.aidoc.backend.enums.DocumentStatus;
-import com.dinisha.aidoc.backend.response.ExtractionResponse;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;

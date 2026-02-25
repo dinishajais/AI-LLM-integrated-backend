@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+
+  ai-service:
+    build: ./ai-service
+    container_name: ai-service
+    ports:
+      - "9000:9000"
+
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ai-service
+    environment:
+      - PYTHON_SERVICE_URL=http://ai-service:9000

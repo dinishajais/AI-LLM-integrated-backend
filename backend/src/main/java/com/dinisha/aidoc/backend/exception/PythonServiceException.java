@@ -2,7 +2,12 @@ package com.dinisha.aidoc.backend.exception;
 
 public class PythonServiceException extends RuntimeException {
 
-    public PythonServiceException(String message) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PythonServiceException(String message) {
         super(message);
     }
 
